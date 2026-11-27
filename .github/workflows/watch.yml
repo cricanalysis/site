@@ -1,0 +1,32 @@
+# An outside check on the site, run by GitHub twice an hour. The machine that builds the site cannot report its own
+# power cut, so this runs somewhere else. When the check fails, GitHub emails the account that owns this repository.
+name: Site watch
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  push:
+    paths:
+      - ".github/alert-test"
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: The site must be fresh and its call-making system running
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "This failure is deliberate: it tests that the alert email arrives."
+            exit 1
+          fi
+          curl -fsS --max-time 30 -o heartbeat.json https://cricanalysis.co.in/heartbeat.json
+          cat heartbeat.json
+          python3 - <<'EOF'
+          import json, sys
+          from datetime import datetime, timezone
+          d = json.load(open("heartbeat.json"))
+          age = (datetime.now(timezone.utc) - datetime.fromisoformat(d["time"])).total_seconds() / 60
+          print(f"heartbeat is {age:.0f} minutes old; call-making system running: {d['logger_ok']}")
+          if age > 150:
+              sys.exit("The site has not been refreshed for over two and a half hours. The office machine or its internet is probably down.")
+          if not d["logger_ok"]:
+              sys.exit("The site is refreshing, but the system that makes the calls has stopped. Calls may be late or missing.")
+          EOF
