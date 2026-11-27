@@ -6,13 +6,13 @@ document.querySelectorAll('.worm').forEach(w=>{
     who=w.querySelector('.who'),num=w.querySelector('.num'),over=w.querySelector('.over'),wk=[...w.querySelectorAll('.wk')],A=w.dataset.a,B=w.dataset.b,
     bat={1:w.dataset.bat1,2:w.dataset.bat2},tip=w.querySelector('.tip'),plot=w.querySelector('.plot');
   // show(i): the chart as it stood at ball i. scrub=true (the reader is pointing at it) keeps the whole line and adds the tooltip.
-  const show=(i,scrub)=>{const [x,y,p,inn,b,r,k]=pts[i],lead=(p>=50?A:B),pc=Math.max(p,100-p)+'%',sc=bat[inn]+' '+r+'/'+k,
-      ov=(inn==1?'1st':'2nd')+' innings, over '+Math.floor(b/6)+'.'+(b%6);
+  const show=(i,scrub)=>{const [x,y,p,inn,b,r,k,fin]=pts[i],lead=(p>=50?A:B),pc=Math.max(p,100-p)+'%',sc=bat[inn]+' '+(k==10?r+' all out':r+'/'+k),
+      ov=fin?'final result':(inn==1?'1st':'2nd')+' innings, over '+Math.floor(b/6)+'.'+(b%6);
     line.style.clipPath=scrub?'none':'inset(0 '+(100-x)+'% 0 0)';ball.style.left=x+'%';ball.style.top=y+'%';
     who.textContent=lead;num.textContent=pc;over.textContent=sc+', '+ov;
     wk.forEach(e=>e.classList.toggle('on',scrub||+e.dataset.x<=x));
     tip.hidden=!scrub;
-    if(scrub){tip.textContent='';[[lead+' '+pc,'b'],[sc,'span'],[ov+' (ball '+b+')','span']].forEach(([t,tag])=>{const d=document.createElement(tag);d.textContent=t;tip.appendChild(d);});
+    if(scrub){tip.textContent='';[[lead+' '+pc,'b'],[sc,'span'],[fin?'Final result':ov+' (ball '+b+')','span']].forEach(([t,tag])=>{const d=document.createElement(tag);d.textContent=t;tip.appendChild(d);});
       tip.style.left=x+'%';tip.style.top=y+'%';tip.dataset.side=x<24?'l':x>76?'r':'c';tip.dataset.v=y<42?'below':'above';}};
   let raf;
   const play=()=>{cancelAnimationFrame(raf);w.classList.add('js');const t0=performance.now(),D=8000;
