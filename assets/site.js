@@ -35,6 +35,7 @@ if(!still&&'IntersectionObserver' in window){
 const times=document.querySelectorAll('time[data-ts]');
 times.forEach(t=>{const d=new Date(+t.dataset.ts*1000);if(!isNaN(d))t.textContent=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});});
 if(times.length&&document.getElementById('tz'))document.getElementById('tz').textContent='Start times are shown in your local time.';
+if(times.length)document.querySelectorAll('.tzs').forEach(e=>e.textContent='(your local time)');
 const openTarget=()=>{const t=location.hash&&document.getElementById(location.hash.slice(1));if(t&&t.tagName==='DETAILS'){t.open=true;t.scrollIntoView();}};
 addEventListener('hashchange',openTarget);openTarget();
 })();
