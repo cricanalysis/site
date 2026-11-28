@@ -39,13 +39,13 @@ h1{font:italic 700 clamp(2.3rem,5.4vw,3.8rem)/.95 var(--display);text-transform:
 
 .today{display:flex;flex-direction:column;gap:10px}
 .sched{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;background:rgba(11,20,55,.62);border:1px solid var(--line);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
-.sched li{display:grid;grid-template-columns:5.6em 1fr auto;gap:4px 14px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line)}
+.sched li{display:grid;grid-template-columns:5.6em minmax(10em,1fr) auto;gap:4px 14px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line)}
 .sched li:last-child{border-bottom:0}
 .sched time{font:italic 800 1.5rem/1 var(--display);color:var(--flood);font-variant-numeric:tabular-nums}
 .sched .fx{display:flex;flex-direction:column;min-width:0}
 .sched .fx b{font:italic 700 1.35rem/1.1 var(--display);text-transform:uppercase;overflow-wrap:anywhere}
 .sched .fx a{color:var(--chalk)}
-.sched .st{text-align:right;font-size:.92rem;color:var(--mute)}
+.sched .st{text-align:right;font-size:.92rem;color:var(--mute);max-width:24em}
 .sched .st b{color:var(--chalk)}
 @media (max-width:600px){.sched li{grid-template-columns:4.8em 1fr}.sched .st{grid-column:2;text-align:left}}
 
